@@ -19,14 +19,34 @@ let MUL   = \n m -> n (ADD m) ZERO
 eval suc_one :
   SUC ONE
   -- (a) fill in your reductions here
+  =d> (\n f x -> f (n f x)) (\f x -> f x)
+  =b> (\f x -> f ((\f x -> f x) f x))
+  =b> (\f x -> f ((\x -> f x) x))
+  =b> (\f x -> f (f x))
   =d> TWO
 
 eval add_one_zero :
   ADD ONE ZERO
   -- (b) fill in your reductions here
+  =d> (\n m -> n (\n f x -> f (n f x)) m) (\f x -> f x) (\f x -> x)
+  =b> (\m -> (\f x -> f x) (\n f x -> f (n f x)) m) (\f x -> x)
+  =b> (\f x -> f x) (\n f x -> f (n f x)) (\f x -> x)
+  =b> (\x -> (\n f x -> f (n f x)) x) (\f x -> x)
+  =b> (\n f x -> f (n f x)) (\f x -> x)
+  =b> (\f x -> f ((\f x -> x) f x))
+  =b> (\f x -> f ((\x -> x) x))
+  =b> (\f x -> f x)
   =d> ONE
 
 eval add_one_two :
   ADD ONE TWO 
   -- (c) fill in your reductions here
+  =d> (\n m -> n (\n f x -> f (n f x)) m) (\f x -> f x) (\f x -> f (f x))
+  =b> (\m -> (\f x -> f x) (\n f x -> f (n f x)) m) (\f x -> f (f x))
+  =b> (\f x -> f x) (\n f x -> f (n f x)) (\f x -> f (f x))
+  =b> (\x -> (\n f x -> f (n f x)) x) (\f x -> f (f x))
+  =b> (\n f x -> f (n f x)) (\f x -> f (f x))
+  =b> (\f x -> f ((\f x -> f (f x)) f x))
+  =b> (\f x -> f ((\x -> f (f x)) x))
+  =b> (\f x -> f (f (f x)))
   =d> THREE
